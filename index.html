@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台州神技网络科技有限公司 | 专业的移动应用开发解决方案</title>
+    <meta name="description" content="台州神技网络科技有限公司专注于高品质移动应用开发，提供iOS、Android及跨平台解决方案。位于中国。">
+    <style>
+        /* ====================
+           基础重置与变量
+           ==================== */
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --primary: #10b981; /* 极光绿 */
+            --primary-hover: #059669;
+            --accent: #f97316; /* 活力橙 */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --font-main: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; object-fit: cover; }
+
+        /* ====================
+           通用工具类与动画
+           ==================== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .text-center { text-align: center; }
+        .text-primary { color: var(--primary); }
+        .text-accent { color: var(--accent); }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            background: #fff;
+            color: var(--bg-dark);
+            transform: translateY(-3px);
+        }
+
+        /* 滚动动画类 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ====================
+           导航栏 (Navbar)
+           ==================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span { color: var(--primary); }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        /* ====================
+           首页 Hero 区域 (模块 1)
+           ==================== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(15,23,42,0.7)), url('https://picsum.photos/id/4/1920/1080');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .hero-stats {
+            margin-top: 60px;
+            display: flex;
+            gap: 60px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+        }
+
+        .stat-item h3 { font-size: 2.5rem; color: #fff; margin-bottom: 5px; }
+        .stat-item p { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ====================
+           关于我们 (模块 2)
+           ==================== */
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-img {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .about-img::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            transform: translate(20px, 20px);
+            z-index: -1;
+        }
+
+        .section-tag {
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            display: block;
+            letter-spacing: 2px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        /* ====================
+           核心价值 (模块 3-5)
+           ==================== */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .value-card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+
+        .value-card h3 { margin-bottom: 16px; font-size: 1.25rem; }
+        .value-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* ====================
+           服务体系 (模块 6-9)
+           ==================== */
+        .services-wrapper {
+            background: #162032; /* 稍浅一点的背景 */
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px; /* 细边框效果 */
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            margin-top: 50px;
+        }
+
+        .service-item {
+            background: var(--bg-dark);
+            padding: 60px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-item:hover {
+            background: #1a2740;
+        }
+
+        .service-item h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .service-item p { color: var(--text-muted); margin-bottom: 24px; }
+        
+        .service-link {
+            color: var(--primary);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .service-bg-num {
+            position: absolute;
+            right: -20px;
+            bottom: -40px;
+            font-size: 10rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.03);
+            pointer-events: none;
+        }
+
+        /* ====================
+           开发流程 (模块 10-13)
+           ==================== */
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 1;
+            width: 23%;
+            text-align: center;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .step-item:hover .step-number {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #111e33;
+        }
+
+        .step-item h4 { margin-bottom: 10px; font-size: 1.2rem; }
+        .step-item p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* ====================
+           技术栈 (模块 14)
+           ==================== */
+        .tech-marquee {
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 40px 0;
+            background: var(--bg-card);
+            margin: 60px 0;
+        }
+
+        .tech-track {
+            display: inline-block;
+            animation: scroll 20s linear infinite;
+        }
+
+        .tech-item {
+            display: inline-block;
+            padding: 10px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-right: 1px solid var(--border);
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ====================
+           项目案例 (模块 15-17)
+           ==================== */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .portfolio-card {
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+        }
+
+        .portfolio-card img {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s ease;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .portfolio-card:hover img { transform: scale(1.1); }
+        .portfolio-card:hover .portfolio-overlay { transform: translateY(0); opacity: 1; }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        /* ====================
+           联系我们 (模块 18-19)
+           ==================== */
+        .contact-section {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            background: var(--bg-card);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .contact-info {
+            background: var(--primary);
+            padding: 60px;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .contact-info h3 { font-size: 2rem; margin-bottom: 20px; }
+        .contact-info p { color: rgba(255,255,255,0.8); margin-bottom: 40px; }
+
+        .info-row {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .contact-form {
+            padding: 60px;
+        }
+
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); }
+        .form-control {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 8px;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-control:focus { border-color: var(--primary); }
+
+        /* ====================
+           Footer (模块 20)
+           ==================== */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 60px 0 30px;
+            margin-top: 100px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 { color: #fff; margin-bottom: 24px; font-size: 1.1rem; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a:hover { color: var(--primary); }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 3rem; }
+            .about-section, .contact-section { grid-template-columns: 1fr; }
+            .service-grid { grid-template-columns: 1fr; }
+            .process-steps { flex-wrap: wrap; gap: 30px; }
+            .step-item { width: 45%; }
+            .process-steps::before { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .hero-stats { flex-wrap: wrap; gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* 简化处理：移动端隐藏菜单 */
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .contact-info { padding: 40px; }
+            .contact-form { padding: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <span>//</span> 神技科技 SHENJI TECH
+            </a>
+            <div class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#about">关于我们</a>
+                <a href="#services">服务体系</a>
+                <a href="#process">流程</a>
+                <a href="#portfolio">案例</a>
+                <a href="#contact">联系</a>
+            </div>
+            <a href="#contact" class="btn btn-primary" style="padding: 10px 24px; font-size: 14px;">立即咨询</a>
+        </div>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="container">
+            <div class="hero-content reveal">
+                <span class="section-tag">创新驱动未来</span>
+                <h1>重塑您的 <br><span>移动互联体验</span></h1>
+                <p>我们是台州神技网络科技有限公司。作为技术驱动型企业，我们致力于通过卓越的代码与设计，为企业打造高性能、高转化的移动应用解决方案。</p>
+                <div style="display: flex; gap: 20px;">
+                    <a href="#services" class="btn btn-primary">探索服务</a>
+                    <a href="#portfolio" class="btn btn-outline">查看案例</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <h3>500+</h3>
+                        <p>成功交付项目</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>98%</h3>
+                        <p>客户好评率</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>5Y+</h3>
+                        <p>行业深耕经验</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="section-padding">
+        <div class="container">
+            <div class="about-section">
+                <div class="about-text reveal">
+                    <span class="section-tag">Who We Are</span>
+                    <h2 class="section-title">不仅仅是代码，<br>更是商业价值的加速器。</h2>
+                    <p class="section-desc">台州神技网络科技有限公司立足于中国，辐射全国。我们不仅仅是一家软件开发公司，更是您数字化转型的战略合作伙伴。</p>
+                    <p class="section-desc">我们深知，每一个 APP 背后都是一个商业梦想。从中国出发，我们的技术团队专注于将复杂的业务逻辑转化为简洁、流畅的用户体验。</p>
+                    
+                    <ul style="margin-top: 20px; display: grid; gap: 15px;">
+                        <li style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color:var(--primary)">✓</span> 深度定制化开发，拒绝模板套用
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color:var(--primary)">✓</span> 全生命周期技术支持
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color:var(--primary)">✓</span> 极速响应的售后服务体系
+                        </li>
+                    </ul>
+                </div>
+                <div class="about-img reveal">
+                    <img src="https://picsum.photos/id/60/800/600" alt="Team working">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background: #131c2e;">
+        <div class="container">
+            <div class="text-center reveal">
+                <span class="section-tag">Core Values</span>
+                <h2 class="section-title">我们的行动准则</h2>
+            </div>
+            <div class="values-grid reveal">
+                <div class="value-card">
+                    <div class="icon-box">⚡</div>
+                    <h3>极致性能</h3>
+                    <p>在移动开发中，速度就是生命。我们优化每一行代码，确保应用在各种网络环境下都能秒级响应。</p>
+                </div>
+                <div class="value-card">
+                    <div class="icon-box">🛡️</div>
+                    <h3>数据安全</h3>
+                    <p>采用企业级加密标准，保护您的核心数据与用户信息。安全是我们开发的底线，而非选项。</p>
+                </div>
+                <div class="value-card">
+                    <div class="icon-box">💎</div>
+                    <h3>匠心设计</h3>
+                    <p>Pixel-perfect 的还原度。我们追求每一个交互动画的细腻，让用户在使用中感受到品质。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section-padding services-wrapper">
+        <div class="container">
+            <div class="reveal">
+                <span class="section-tag">Our Expertise</span>
+                <h2 class="section-title">全栈式移动开发服务</h2>
+            </div>
+
+            <div class="service-grid reveal">
+                <div class="service-item">
+                    <span class="service-bg-num">01</span>
+                    <h3>iOS 原生开发</h3>
+                    <p>基于 Swift/Objective-C 的高性能 iOS 应用开发。深度适配 iPhone 与 iPad 生态，利用最新的 iOS 特性为用户提供无缝体验。</p>
+                    <a href="#contact" class="service-link">了解详情 <span>→</span></a>
+                </div>
+                <div class="service-item">
+                    <span class="service-bg-num">02</span>
+                    <h3>Android 定制开发</h3>
+                    <p>针对碎片化的 Android 市场提供完美的兼容性解决方案。从底层架构到 Material Design 界面设计，打造稳健的安卓应用。</p>
+                    <a href="#contact" class="service-link">了解详情 <span>→</span></a>
+                </div>
+                <div class="service-item">
+                    <span class="service-bg-num">03</span>
+                    <h3>跨平台方案 (Flutter/RN)</h3>
+                    <p>一次编码，多端运行。利用 Flutter 或 React Native 技术，大幅降低开发成本与维护周期，同时保持接近原生的性能。</p>
+                    <a href="#contact" class="service-link">了解详情 <span>→</span></a>
+                </div>
+                <div class="service-item">
+                    <span class="service-bg-num">04</span>
+                    <h3>后端与云服务</h3>
+                    <p>不仅仅是前端。我们提供高并发、高可用的后端架构设计，服务器部署及数据库管理，确保您的业务永不掉线。</p>
+                    <a href="#contact" class="service-link">了解详情 <span>→</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="process" class="section-padding">
+        <div class="container">
+            <div class="text-center reveal">
+                <span class="section-tag">Workflow</span>
+                <h2 class="section-title">从概念到落地的旅程</h2>
+            </div>
+            
+            <div class="process-steps reveal">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <h4>需求洞察</h4>
+                    <p>深入理解业务逻辑，输出详细的功能列表与原型图。</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <h4>视觉交互</h4>
+                    <p>UI/UX 设计师介入，确立视觉风格，打磨交互细节。</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <h4>敏捷开发</h4>
+                    <p>前后端并行开发，双周迭代，定期汇报进度与演示。</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">04</div>
+                    <h4>测试交付</h4>
+                    <p>全机型兼容性测试，协助上架应用商店及后期运维。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tech-marquee">
+        <div class="tech-track">
+            <span class="tech-item">Swift</span>
+            <span class="tech-item">Kotlin</span>
+            <span class="tech-item">Flutter</span>
+            <span class="tech-item">React Native</span>
+            <span class="tech-item">Vue.js</span>
+            <span class="tech-item">Node.js</span>
+            <span class="tech-item">Python</span>
+            <span class="tech-item">Go</span>
+            <span class="tech-item">Docker</span>
+            <span class="tech-item">Kubernetes</span>
+            <span class="tech-item">Swift</span>
+            <span class="tech-item">Kotlin</span>
+            <span class="tech-item">Flutter</span>
+        </div>
+    </section>
+
+    <section id="portfolio" class="section-padding">
+        <div class="container">
+            <div class="reveal" style="margin-bottom: 50px; display: flex; justify-content: space-between; align-items: end;">
+                <div>
+                    <span class="section-tag">Selected Works</span>
+                    <h2 class="section-title">近期交付项目</h2>
+                </div>
+                <a href="#contact" class="btn btn-outline" style="border-color: var(--border); color: var(--text-muted);">查看全部</a>
+            </div>
+
+            <div class="portfolio-grid reveal">
+                <div class="portfolio-card">
+                    <img src="https://picsum.photos/id/119/800/600" alt="Project 1">
+                    <div class="portfolio-overlay">
+                        <span class="tag">电商零售</span>
+                        <h3>全球购跨境电商 APP</h3>
+                        <p style="font-size: 0.9rem; color: #ddd; margin-top: 5px;">高并发架构，支持千万级 SKU 实时检索。</p>
+                    </div>
+                </div>
+                <div class="portfolio-card">
+                    <img src="https://picsum.photos/id/180/800/600" alt="Project 2">
+                    <div class="portfolio-overlay">
+                        <span class="tag">企业办公</span>
+                        <h3>智能 OA 协作平台</h3>
+                        <p style="font-size: 0.9rem; color: #ddd; margin-top: 5px;">集成 IM 通讯与工作流引擎，提升 40% 协作效率。</p>
+                    </div>
+                </div>
+                <div class="portfolio-card">
+                    <img src="https://picsum.photos/id/201/800/600" alt="Project 3">
+                    <div class="portfolio-overlay">
+                        <span class="tag">物联网 IoT</span>
+                        <h3>智能家居控制中心</h3>
+                        <p style="font-size: 0.9rem; color: #ddd; margin-top: 5px;">软硬结合，实时监控设备状态与远程操控。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <div class="contact-section reveal">
+                <div class="contact-info">
+                    <div>
+                        <h3>开启您的项目</h3>
+                        <p>准备好将想法变为现实了吗？请联系我们，获取免费的项目评估与技术咨询。</p>
+                        
+                        <div class="info-row">
+                            <div style="font-size: 20px;">📍</div>
+                            <div>
+                                <strong>公司地址</strong><br>
+                                浙江省台州市天台县赤城街道飞鹤路12号
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div style="font-size: 20px;">📧</div>
+                            <div>
+                                <strong>电子邮箱</strong><br>
+                                info@tzshenji.icu
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div style="font-size: 20px;">📞</div>
+                            <div>
+                                <strong>联系电话</strong><br>
+                                14650647480
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="font-size: 0.8rem; opacity: 0.6;">
+                        台州神技网络科技有限公司 © 2025
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3 style="margin-bottom: 30px; font-size: 1.8rem;">发送消息</h3>
+                    <form onsubmit="event.preventDefault(); alert('感谢您的留言，我们会尽快联系您！');">
+                        <div class="form-group">
+                            <label>您的姓名</label>
+                            <input type="text" class="form-control" placeholder="请输入姓名">
+                        </div>
+                        <div class="form-group">
+                            <label>联系方式</label>
+                            <input type="text" class="form-control" placeholder="电话或微信">
+                        </div>
+                        <div class="form-group">
+                            <label>项目需求</label>
+                            <textarea class="form-control" rows="4" placeholder="请简单描述您的需求..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">提交需求</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">
+                        <span>//</span> 许昌鹏捷
+                    </div>
+                    <p>专注于高品质移动应用定制开发。我们相信技术的力量，致力于通过创新的数字解决方案，帮助企业在移动互联网时代取得成功。</p>
+                </div>
+                <div class="footer-col">
+                    <h4>服务项目</h4>
+                    <ul>
+                        <li><a href="#">iOS 开发</a></li>
+                        <li><a href="#">Android 开发</a></li>
+                        <li><a href="#">微信小程序</a></li>
+                        <li><a href="#">企业数字化</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="#about">关于我们</a></li>
+                        <li><a href="#portfolio">成功案例</a></li>
+                        <li><a href="#process">合作流程</a></li>
+                        <li><a href="#contact">联系支持</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>关注我们</h4>
+                    <p>订阅我们的技术周刊，获取最新行业动态。</p>
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <div style="width: 36px; height: 36px; background: #334155; border-radius: 50%;"></div>
+                        <div style="width: 36px; height: 36px; background: #334155; border-radius: 50%;"></div>
+                        <div style="width: 36px; height: 36px; background: #334155; border-radius: 50%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 台州神技网络科技有限公司 | 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 1. 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 2. 元素滚动渐入动画 (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // 只触发一次
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
